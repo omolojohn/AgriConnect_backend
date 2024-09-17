@@ -18,7 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///agri_market_db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = '217ef16e1e9a07be79a7a4d9e3f20d027a3a274ad4dc215d582aca4d7a1a15d2'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=2)
-app.config['CLOUDINARY_URL'] = 'cloudinary://api_key:api_secret@cloud_name'
+app.config['CLOUDINARY_URL'] = 'cloudinary://456584813683358:N70vCZCBhr1dSsTVw_TFch6Euwt@dqfbde8ib'
 
 # M-Pesa Configuration
 app.config['MPESA_CONSUMER_KEY'] = 'SPzneIGYRgzWGO5B9CXINWjWa3nx9YE0sOisQFshwEIXEHqF'
