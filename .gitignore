@@ -1,0 +1,78 @@
+# Python related files
+*.py[cod]
+__pycache__/
+*.so
+*.pyd
+
+# Environment variables file
+.env
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Database files
+*.sqlite3
+*.db
+
+# Flask specific files
+instance/
+instance/*.pyc
+instance/*.db
+
+# Logs and local files
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.pid
+*.swp
+
+# Byte-compiled / optimized / DLL files
+*.dll
+*.DS_Store
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Migrations
+migrations/
+
+# Pytest cache
+.pytest_cache/
+__pycache__/
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Editor-specific files
+*.sublime-workspace
+*.sublime-project
+.idea/
+.vscode/
+*.code-workspace
+
+# macOS specific files
+.DS_Store
+
+# Docker-related files
+docker-compose.yml
+Dockerfile
+
+# Files
+secret.py
