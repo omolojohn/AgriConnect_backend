@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "==2.2.3"
+flask = "*"
 sqlalchemy = "==2.0.18"
 psycopg2-binary = "==2.9.7"
 flask-migrate = "==4.0.4"
@@ -14,6 +14,7 @@ flask-jwt-extended = "==4.6.0"
 cloudinary = "==1.36.0"
 requests = "==2.30.0"
 gunicorn = "==23.0.0"
+werkzeug = "*"
 
 [dev-packages]
 
