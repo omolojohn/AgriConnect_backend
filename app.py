@@ -101,6 +101,7 @@ def role_required(role):
             user_id = get_jwt_identity()
             user = User.query.get(user_id)
             if user and user.role == role:
+                
                 return fn(*args, **kwargs)
             else:
                 return jsonify({'message': 'Unauthorized access, insufficient permissions!'}), 403
