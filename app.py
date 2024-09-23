@@ -9,12 +9,15 @@ from functools import wraps
 import cloudinary, cloudinary.uploader, cloudinary.api
 import requests
 from requests.auth import HTTPBasicAuth
+from flask_cors import CORS
 
 
 app = Flask(__name__)
 
+CORS(app)
+
 # Configure SQLite database URI , cloudinary and JWT
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///agri_market_db.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://agriconnect_user:XRhihomCxxeX0PlsGUpeZfwM05MwMRDO@dpg-crle93m8ii6s73d9qrag-a.oregon-postgres.render.com/agriconnect'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = '217ef16e1e9a07be79a7a4d9e3f20d027a3a274ad4dc215d582aca4d7a1a15d2'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=2)
@@ -73,7 +76,7 @@ def lipa_na_mpesa_online(amount, phone_number, account_number):
         "PartyA": phone_number,
         "PartyB": app.config['MPESA_SHORTCODE'],
         "PhoneNumber": phone_number,
-        "CallBackURL": "https://yourdomain.com/callback",
+        "CallBackURL": "https://agriconnect-backend-2qop.onrender.com/callback",
         "AccountNumber": account_number,
         "TransactionDesc": "Payment for goods"
     }
@@ -101,7 +104,7 @@ def role_required(role):
             user_id = get_jwt_identity()
             user = User.query.get(user_id)
             if user and user.role == role:
-                
+
                 return fn(*args, **kwargs)
             else:
                 return jsonify({'message': 'Unauthorized access, insufficient permissions!'}), 403
@@ -110,7 +113,7 @@ def role_required(role):
 
 @app.route('/')
 def index():
-    return "Welcome to the fresh produce market, where farmers meet buyers!"
+    return jsonify({"content": "Welcome to the fresh produce market, where farmers meet buyers!"})
 
 # User registration
 @app.route('/register', methods=['POST'])
