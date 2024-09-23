@@ -1,35 +1,38 @@
 import os
 from flask import Flask, request, jsonify
+from config import DevelopmentConfig
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from models import db, User, Product, Order, OrderItem, Payment, Logistics, Feedback
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from datetime import timedelta
+from datetime import datetime
 from functools import wraps
 import cloudinary, cloudinary.uploader, cloudinary.api
 import requests
 from requests.auth import HTTPBasicAuth
 from flask_cors import CORS
+import base64
 
 
 app = Flask(__name__)
 
 CORS(app)
+app.config.from_object(DevelopmentConfig)
 
-# Configure SQLite database URI , cloudinary and JWT
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://agriconnect_user:XRhihomCxxeX0PlsGUpeZfwM05MwMRDO@dpg-crle93m8ii6s73d9qrag-a.oregon-postgres.render.com/agriconnect'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = '217ef16e1e9a07be79a7a4d9e3f20d027a3a274ad4dc215d582aca4d7a1a15d2'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=2)
-app.config['CLOUDINARY_URL'] = 'cloudinary://456584813683358:N70vCZCBhr1dSsTVw_TFch6Euwt@dqfbde8ib'
+# # Configure POSTGRESQL database URI , cloudinary and JWT
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://agriconnect_user:XRhihomCxxeX0PlsGUpeZfwM05MwMRDO@dpg-crle93m8ii6s73d9qrag-a.oregon-postgres.render.com/agriconnect'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['JWT_SECRET_KEY'] = '217ef16e1e9a07be79a7a4d9e3f20d027a3a274ad4dc215d582aca4d7a1a15d2'
+# app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=2)
+# app.config['CLOUDINARY_URL'] = 'cloudinary://456584813683358:N70vCZCBhr1dSsTVw_TFch6Euwt@dqfbde8ib'
 
-# M-Pesa Configuration
-app.config['MPESA_CONSUMER_KEY'] = 'SPzneIGYRgzWGO5B9CXINWjWa3nx9YE0sOisQFshwEIXEHqF'
-app.config['MPESA_CONSUMER_SECRET'] = 'agaKNaGcKWf3DLgJGGRVmuDCewsNWejGVd5mMws1UwACij8DYHaNeGKnwv6AcAKT'
-app.config['MPESA_SHORTCODE'] = 'N/A'
-app.config['MPESA_LIPA_SHORTCODE'] = 'N/A'
-app.config['MPESA_PASSKEY'] = 'N/A'
-app.config['MPESA_ENVIRONMENT'] = 'sandbox'
+# # M-Pesa Configuration
+# app.config['MPESA_CONSUMER_KEY'] = 'SPzneIGYRgzWGO5B9CXINWjWa3nx9YE0sOisQFshwEIXEHqF'
+# app.config['MPESA_CONSUMER_SECRET'] = 'agaKNaGcKWf3DLgJGGRVmuDCewsNWejGVd5mMws1UwACij8DYHaNeGKnwv6AcAKT'
+# app.config['MPESA_SHORTCODE'] = 'N/A'
+# app.config['MPESA_LIPA_SHORTCODE'] = 'N/A'
+# app.config['MPESA_PASSKEY'] = 'N/A'
+# app.config['MPESA_ENVIRONMENT'] = 'sandbox'
 
 
 cloudinary.config(
@@ -76,7 +79,7 @@ def lipa_na_mpesa_online(amount, phone_number, account_number):
         "PartyA": phone_number,
         "PartyB": app.config['MPESA_SHORTCODE'],
         "PhoneNumber": phone_number,
-        "CallBackURL": "https://agriconnect-backend-2qop.onrender.com/callback",
+        "CallBackURL": "https://agriconnect-backend-1-pv41.onrender.com/callback",
         "AccountNumber": account_number,
         "TransactionDesc": "Payment for goods"
     }
@@ -221,7 +224,7 @@ def create_product():
     image = request.files.get('image')
     if image:
         upload_result = cloudinary.upload(image)
-        image_url = upload_result['url']
+        image_url = upload_result('url', '')
     else:
         image_url = data.get('image_url', '')
 
@@ -242,14 +245,14 @@ def create_product():
 def get_products():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
-    products = Product.query.paginate(page, per_page, False)
-    products = Product.query.all()
+    products_query = Product.query.paginate(page, per_page, False)
     return jsonify({
-        'total': products.total,
-        'pages': products.pages,
-        'current_page': products.pages,
-        'products':[product.to_dict() for product in products]
-        })
+        'total': products_query.total,
+        'pages': products_query.pages,
+        'current_page': products_query.page,
+        'products': [product.to_dict() for product in products_query.items]
+    })
+
 
 @app.route('/products/<int:id>', methods=['GET'])
 @jwt_required()
