@@ -19,22 +19,6 @@ app = Flask(__name__)
 CORS(app)
 app.config.from_object(DevelopmentConfig)
 
-# # Configure POSTGRESQL database URI , cloudinary and JWT
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://agriconnect_user:XRhihomCxxeX0PlsGUpeZfwM05MwMRDO@dpg-crle93m8ii6s73d9qrag-a.oregon-postgres.render.com/agriconnect'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['JWT_SECRET_KEY'] = '217ef16e1e9a07be79a7a4d9e3f20d027a3a274ad4dc215d582aca4d7a1a15d2'
-# app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=2)
-# app.config['CLOUDINARY_URL'] = 'cloudinary://456584813683358:N70vCZCBhr1dSsTVw_TFch6Euwt@dqfbde8ib'
-
-# # M-Pesa Configuration
-# app.config['MPESA_CONSUMER_KEY'] = 'SPzneIGYRgzWGO5B9CXINWjWa3nx9YE0sOisQFshwEIXEHqF'
-# app.config['MPESA_CONSUMER_SECRET'] = 'agaKNaGcKWf3DLgJGGRVmuDCewsNWejGVd5mMws1UwACij8DYHaNeGKnwv6AcAKT'
-# app.config['MPESA_SHORTCODE'] = 'N/A'
-# app.config['MPESA_LIPA_SHORTCODE'] = 'N/A'
-# app.config['MPESA_PASSKEY'] = 'N/A'
-# app.config['MPESA_ENVIRONMENT'] = 'sandbox'
-
-
 cloudinary.config(
     cloud_name="dqfbde8ib",
     api_key="456584813683358",

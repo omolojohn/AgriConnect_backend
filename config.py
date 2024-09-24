@@ -22,8 +22,7 @@ class Config:
     MPESA_ENVIRONMENT = os.environ.get('MPESA_ENVIRONMENT') or 'sandbox'
 
     # Database Configuration
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://agriconnect_user:XRhihomCxxeX0PlsGUpeZfwM05MwMRDO@dpg-crle93m8ii6s73d9qrag-a.oregon-postgres.render.com/agriconnect'
-
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://agriconnect_hxov_user:hYGLluhLlxLik1w8WsGMG7LDqJaxq6BU@dpg-crp5r4tds78s73d4o520-a.oregon-postgres.render.com/agriconnect_hxov'
 class DevelopmentConfig(Config):
     DEBUG = True
 
