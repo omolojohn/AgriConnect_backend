@@ -527,6 +527,11 @@ def delete_logistic(id):
 @jwt_required()
 def create_feedback():
     data = request.get_json()
+
+    # Validate input
+    if 'rating' not in data or 'comment' not in data or 'user_id' not in data or 'product_id' not in data:
+        return jsonify({'message': 'Missing required fields'}), 400
+
     new_feedback = Feedback(
         rating=data['rating'],
         comment=data['comment'],
@@ -561,17 +566,23 @@ def get_feedback_by_id(id):
         return jsonify({'message': 'Feedback not found'}), 404
 
 @app.route('/feedback/<int:id>', methods=['PUT'])
-@role_required('admin')  # Only admin can update feedback
+@jwt_required()
 def update_feedback(id):
     data = request.get_json()
     feedback = Feedback.query.get(id)
-    if feedback:
-        feedback.rating = data.get('rating', feedback.rating)
-        feedback.comment = data.get('comment', feedback.comment)
-        db.session.commit()
-        return jsonify(feedback.to_dict())
-    else:
+    
+    if not feedback:
         return jsonify({'message': 'Feedback not found'}), 404
+    
+    # Ensure the user is the one who created the feedback
+    current_user_id = get_jwt_identity()
+    if feedback.user_id != current_user_id:
+        return jsonify({'message': 'Unauthorized to update this feedback'}), 403
+
+    feedback.rating = data.get('rating', feedback.rating)
+    feedback.comment = data.get('comment', feedback.comment)
+    db.session.commit()
+    return jsonify(feedback.to_dict()), 200
 
 @app.route('/feedback/<int:id>', methods=['DELETE'])
 @role_required('admin')  # Only admin can delete feedback
