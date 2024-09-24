@@ -63,7 +63,7 @@ def lipa_na_mpesa_online(amount, phone_number, account_number):
         "PartyA": phone_number,
         "PartyB": app.config['MPESA_SHORTCODE'],
         "PhoneNumber": phone_number,
-        "CallBackURL": "https://agriconnect-backend-1-pv41.onrender.com/callback",
+        "CallBackURL": "https://agriconnect-backend-bcwg.onrender.com/callback",
         "AccountNumber": account_number,
         "TransactionDesc": "Payment for goods"
     }
