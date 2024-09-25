@@ -16,7 +16,7 @@ import base64
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 app.config.from_object(DevelopmentConfig)
 
 cloudinary.config(

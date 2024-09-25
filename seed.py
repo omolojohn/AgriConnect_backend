@@ -11,9 +11,9 @@ def seed_db():
 
         # Create users
         user1 = User(username='John Omolo', email='farmer1@example.com', role='farmer')
-        user1.set_password('password1')  # Set hashed password
+        user1.set_password('password1')
         user2 = User(username='Caroline Akoth', email='buyer1@example.com', role='buyer')
-        user2.set_password('password2')  # Set hashed password
+        user2.set_password('password2')
         
         db.session.add(user1)
         db.session.add(user2)
